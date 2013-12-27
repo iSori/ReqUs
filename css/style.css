@@ -1,0 +1,115 @@
+.wrapper {
+    width:100%;
+    font-family:Georgia, serif;
+}
+/* HEADER */
+ .header {
+    float:up;
+    height:50px;
+    padding-right:20px;
+    padding:10px;
+}
+.header ul {
+    list-style-type:none;
+    float:right;
+}
+.header li {
+    display:inline;
+    padding:10px;
+	cursor: pointer;
+}
+
+.header li:hover{
+	text-decoration:underline;
+}
+
+/* MENU */
+ .menu_container {
+	color: #ffffff;
+    font-weight:bold;
+    float:up;
+    text-align:left;
+    background-color:222222;
+}
+.menu_container ul {
+  text-align: left;
+  display: inline;
+  margin: 0;
+  padding: 15px 4px 17px 0;
+  list-style: none;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+.menu_container li {
+  font: bold 16px/20px sans-serif;
+  display: inline-block;
+  margin-right: -4px;
+  position: relative;
+  padding: 15px 20px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.menu_container ul li:hover {
+  background: #fff;
+  color: #000;
+}
+
+
+/* REQUIREMENTS SECTION*/
+ .req_tables {
+    width:70%;
+    padding-left:15%;
+    padding-right:15%;
+}
+.requirement {
+    width:100%;
+}
+.requirement td {
+    border:1px solid #dd0000;
+    border-width:0px 0px 1px 0px;
+    padding:7px;
+    font-weight:bold;
+}
+#reqID {
+    width:20%;
+}
+#reqName {
+    width:50%;
+}
+#reqTable {
+    width:100%;
+}
+.requirement table {
+    border:1px;
+}
+.req_comments  table{
+    width:100%;
+}
+
+.req_comments td {
+    width:33%;
+    border:1px solid #dd0000;
+    border-width:0px 1px 1px 1px;
+}
+/* 'star-rating' component */
+.stars {
+	width: 100%;
+}
+
+span {
+	font-size: 20px;
+	color: orange;
+	cursor: pointer;
+}
+
+span:hover:before {
+	content: "\2605";
+	position: absolute;
+	color: orange;
+}
