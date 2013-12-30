@@ -1,6 +1,6 @@
 <div class="header">
 	<ul>
-		<li>Log in</li>
-		<li>Sign up</li>
+		<a href="<?php echo base_url()?>site/login"><li>Login </li>
+		<a href="<?php echo base_url()?>site/signup"><li>Sign up</li>
 	</ul>
 </div>

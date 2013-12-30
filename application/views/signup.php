@@ -18,14 +18,18 @@
 	
 	echo form_input($data);
 	
-		echo form_label("Username: ", "username");
+	echo '<br/>';
+	
+	echo form_label("Username: ", "username");
 	$data = array(
 		"name" => "username",
 		"id" => "username",
-		"value" => set_value("fullName")
+		"value" => set_value("username")
 	);
 	
 	echo form_input($data);
+	
+	echo '<br/>';
 	
 	echo form_label("Email: ", "email");
 	$data = array(
@@ -36,14 +40,27 @@
 	
 	echo form_input($data);
 	
+	echo '<br/>';
+	
 	echo form_label("Password: ", "password");
 	$data = array(
 		"name" => "password",
 		"id" => "password",
-		"value" => set_value("password")
 	);
 	
-	echo form_input($data);
+	echo form_password($data);
+
+	echo '<br/>';
+	
+	echo form_label("Confirm Password: ", "cpassword");
+	$data = array(
+		"name" => "cpassword",
+		"id" => "cpassword",
+	);
+	
+	echo form_password($data);
+	
+	echo '<br/>';
 	
 	echo form_submit("signUpSubmit", "Submit");
 	
