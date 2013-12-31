@@ -5,6 +5,7 @@ class Site extends CI_Controller {
 	public function index(){
 		$data = $this->load_requirements();
 		$data["message"] = "";
+		$data["done"] = "";
 		$this->dashboard($data);
 	}
 	
@@ -38,14 +39,15 @@ class Site extends CI_Controller {
 			$this->load->model("model_users");
 			$this->load->model("model_scores");
 			
-			$data["user"] = $this->model_users->get_user($this->session->userdata('username'));
-			$data["scores"] = $this->model_scores->get_user_scores($this->session->userdata('username'));
-			
 			$data["title"] = "My Profile";
 			$this->load->view("header", $data);
+			
+			$data["user"] = $this->model_users->get_user($this->session->userdata('username'));
+			$data["scores"] = $this->model_scores->get_user_info($this->session->userdata('username'));
+			
 			$this->load->view("loggedHeader");
 			$this->load->view("menu");
-			$this->load->view("content_my_profile");
+			$this->load->view("content_my_profile", $data);
 
 		// The user is not logged in	
 		}else{
@@ -307,18 +309,20 @@ class Site extends CI_Controller {
 		
 		if ($this->form_validation->run() == FALSE){
 			$data = $this->load_requirements();
-			$data["message"] = "Could not add comment";
+			$data["message"] = "Could not add comment.";
+			$data["done"] = "";
 			$this->dashboard($data);
 				
 		} else{
 			$this->load->model("model_comments");
 			if($this->model_comments->add_comment()){
 				$data = $this->load_requirements();
-				$data["message"] = "Comment added! You've earned 4 points!";
+				$data["done"] = "Comment added! You've earned 4 points!";
 				$this->dashboard($data);
 			}else{
 				$data = $this->load_requirements();
 				$data["message"]= "Could not add comment";
+				$data["done"] = "Comment added! You've earned 4 points!";
 				$this->dashboard($data);
 			
 			}

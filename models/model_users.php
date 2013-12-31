@@ -75,6 +75,13 @@ class Model_users extends CI_Model{
 		$this->db->where('username', $username);
 		$user = $this->db->get('user');
 		
-		return $user;
+		return $user->row();
+	}
+	
+	
+	public function get_users(){
+		$users_query = $this->db->query('user');
+		
+		return $users_query->row();
 	}
 }

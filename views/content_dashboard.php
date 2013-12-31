@@ -6,8 +6,17 @@
 	<br />
 	
 	<p class="message" style="color:red"> <?php echo $message?></p>
+	<p class="done" style="color:blue"> <?php echo $done?></p>
 	
 	<?php
+		$this->load->helper("form");
+		?>
+		<p class="message" style="color:red">
+		<?php
+		echo validation_errors();
+		?>
+		</p>
+		<?php
 		foreach($requirements->result() as $req){
 			echo "<br/> <br/><div class='req_wrap'>
 				<div class='req_tables'>
@@ -44,18 +53,24 @@
 										<span>&#9734;<span>&#9734;<span>&#9734;</span></span></span>
 									</div></td><td id='comm'>";
 			};
-				$this->load->helper("form");
-				echo validation_errors();
 				
 				echo form_open("site/add_comment");
 				
-				echo "<p>Add comment: <p>";
-				echo form_input('comment');
-				echo "<input type='hidden' name='requirement' id='requirement' value='$req->idRequirement'/>";
+				echo "<div class='add_comm'><p>";
+				$data = array(
+					  'name'        => 'comment',
+					  'id'          => 'comment',
+					  'value'       => 'Add your comment here',
+					  'rows'   		=> '3',
+					  'cols'        => '50',
+					  'style'       => 'width:50%',
+				);
+				echo form_textarea($data);
+				echo "<input type='hidden' name='requirement' id='requirement' value='$req->idRequirement'/><br>";
 				echo form_submit("comment_submit", "Add comment");
 				
 				echo form_close();
-				echo "				</td></tr>
+				echo "				<br></div></td></tr>
 							</table>
 						</table>
 					</div>
