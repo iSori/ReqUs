@@ -1,4 +1,4 @@
-<div id="signup">
+<div class="center">
 	<?php
 	
 	$this->load->helper("form");
@@ -19,9 +19,9 @@
 	
 	echo form_input($data);
 	
-	echo '<p>Password: <p>';
+	echo '<br/>Password:';
 	echo form_password('password');
-	
+	echo '<br/>';
 	
 	
 	echo form_submit("login_submit", "Login");

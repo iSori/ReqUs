@@ -3,10 +3,13 @@
 class Site extends CI_Controller {
 
 	public function index(){
-		$this->dashboard();
+		$data = $this->load_requirements();
+		$data["message"] = "";
+		$data["done"] = "";
+		$this->dashboard($data);
 	}
 	
-	public function dashboard(){
+	public function dashboard($data){
 		$data["title"] = "Dashboard";
 		$this->load->view("header", $data);
 		if($this->session->userdata('is_logged_in'))
@@ -15,7 +18,8 @@ class Site extends CI_Controller {
 			$this->load->view("notLoggedHeader");
 		
 		$this->load->view("menu");
-		$this->load->view("content_dashboard");
+		$this->load->view("content_dashboard", $data);
+		$this->load->view("footer");
 	}
 	
 	public function projectStats(){
@@ -28,21 +32,57 @@ class Site extends CI_Controller {
 		
 		$this->load->view("menu");
 		$this->load->view("content_project_stats");
+		$this->load->view("footer");
+	}
+		
+	public function about(){
+		$data["title"] = "About";
+		$this->load->view("header", $data);
+		if($this->session->userdata('is_logged_in'))
+			$this->load->view("loggedHeader");
+		else 
+			$this->load->view("notLoggedHeader");
+		
+		$this->load->view("menu");
+		$this->load->view("content_about");
+		$this->load->view("footer");
 	}
 	
 	public function my_profile(){
 		// The user is logged in
 		if($this->session->userdata('is_logged_in')){
+			$this->load->model("model_users");
+			$this->load->model("model_scores");
+			
 			$data["title"] = "My Profile";
 			$this->load->view("header", $data);
+			
+			$data["user"] = $this->model_users->get_user($this->session->userdata('username'));
+			$data["scores"] = $this->model_scores->get_user_info($this->session->userdata('username'));
+			
 			$this->load->view("loggedHeader");
 			$this->load->view("menu");
-			$this->load->view("content_my_profile");
+			$this->load->view("content_my_profile", $data);
+			$this->load->view("footer");
 
 		// The user is not logged in	
 		}else{
 			$this->restricted_area();
 		}
+	}
+	
+	public function scores(){
+		$data["title"] = "Scores";
+		$this->load->view("header", $data);
+		if($this->session->userdata('is_logged_in'))
+			$this->load->view("loggedHeader");
+		else 
+			$this->load->view("notLoggedHeader");
+	
+		$data = $this->get_scores();
+		
+		$this->load->view("menu");
+		$this->load->view("content_scores", $data);	
 	}
 	
 	public function new_requirement(){
@@ -54,6 +94,7 @@ class Site extends CI_Controller {
 			$this->load->view("loggedHeader");
 			$this->load->view("menu");
 			$this->load->view("content_new_requirement", $data);
+			$this->load->view("footer");
 		
 		// The user is not logged in	
 		}else{
@@ -68,6 +109,7 @@ class Site extends CI_Controller {
 		$this->load->view("notLoggedHeader");
 		$this->load->view("menu");
 		$this->load->view("content_restricted_area");
+		$this->load->view("footer");
 	}
 	
 	public function signup(){
@@ -80,6 +122,7 @@ class Site extends CI_Controller {
 			$this->load->view("notLoggedHeader");
 			$this->load->view("menu");
 			$this->load->view("signup");
+			$this->load->view("footer");
 			
 		}
 	}
@@ -94,6 +137,7 @@ class Site extends CI_Controller {
 			$this->load->view("notLoggedHeader");
 			$this->load->view("menu");
 			$this->load->view("login", $data);
+			$this->load->view("footer");
 		}
 	}
 	
@@ -107,13 +151,14 @@ class Site extends CI_Controller {
 			$this->load->view("notLoggedHeader");
 			$this->load->view("menu");
 			$this->load->view("content_restricted_area");
+			$this->load->view("footer");
 		}
 	}
 	
 	
 	public function logout(){
 		$this->session->sess_destroy();
-		redirect('site/dashboard');
+		$this->index();
 	}
 	
 	public function signup_send(){
@@ -134,6 +179,7 @@ class Site extends CI_Controller {
 			$this->load->view("notLoggedHeader");
 			$this->load->view("menu");
 			$this->load->view("signup", $data);
+			$this->load->view("footer");
 				
 		} else{
 			// in case the registration goes well, we send an email
@@ -145,7 +191,7 @@ class Site extends CI_Controller {
 			$this->load->model('model_users');
 			
 			// Send the email
-			$this->email->from('info@requs.webage.com', "Sorin");
+			$this->email->from('info@requs.webage.com', "The ReqUs Team");
 			$this->email->to($this->input->post('email'));
 			$this->email->subject("Confirm your account at ReqUs");
 			
@@ -197,6 +243,7 @@ class Site extends CI_Controller {
 		$this->load->view("notLoggedHeader");
 		$this->load->view("menu");
 		$this->load->view("content_redirecting", $data);
+		$this->load->view("footer");
 	}
 	
 	public function login_send(){
@@ -212,6 +259,7 @@ class Site extends CI_Controller {
 			$this->load->view("notLoggedHeader");
 			$this->load->view("menu");
 			$this->load->view("login", $data);
+			$this->load->view("footer");
 				
 		} else{
 			$data = array(
@@ -222,8 +270,6 @@ class Site extends CI_Controller {
 			
 			redirect('site/my_profile');
 		}
-		
-		// echo $his->input->post('username');
 	}
 	
 	// This method is used for checking if there is an entry with the given user and password.
@@ -267,22 +313,86 @@ class Site extends CI_Controller {
 		// If the validation is correct the model to insert the data is called		
 		} else{
 			// The user is informed of whether the requirement has been added or not
-			if($this->model_requirements->add_requirement()){
-				$data["message"] = "<p style='color:blue'> The requirement has been added! </p>";
+			if($this->model_requirements->add_req()){	
 				$data["title"] = "New Requirement";
 				$this->load->view("header", $data);
 				$this->load->view("loggedHeader");
 				$this->load->view("menu");
+				$data["message"] = "<p style='color:blue'> Requirement added! You've earned 7 points!</p>";
 				$this->load->view("content_new_requirement", $data);
 				
-			}else
+			}else{
 				$data["message"] = "<p style='color:red'>There was a problem uploading the new requirement </p>";
 				$data["title"] = "New Requirement";
 				$this->load->view("header", $data);
 				$this->load->view("loggedHeader");
 				$this->load->view("menu");
 				$this->load->view("content_new_requirement", $data);
-		
+				$this->load->view("footer");
+			}
 		}
+	}
+	
+	public function load_requirements(){
+		$this->load->model('model_requirements');
+		$data = $this->model_requirements->get_requirements();
+		
+		return $data;
+	}
+	
+	public function add_comment(){
+		$this->load->library("form_validation");
+		$data["message"] = "";
+		
+		$this->form_validation->set_rules("comment", "Comment", "required|xss_clean|trim|callback_check_comments");
+		
+		if ($this->form_validation->run() == FALSE){
+			$data = $this->load_requirements();
+			$data["message"] = "Could not add comment.";
+			$data["done"] = "";
+			$this->dashboard($data);
+				
+		} else{
+			$this->load->model("model_comments");
+			if($this->model_comments->add_comment()){
+				$data = $this->load_requirements();
+				$data["message"] = "";
+				$data["done"] = "Comment added! You've earned 4 points!";
+				$this->dashboard($data);
+			}else{
+				$data = $this->load_requirements();
+				$data["message"]= "Could not add comment";
+				$data["done"] = "";
+				$this->dashboard($data);
+			
+			}
+		}
+	}
+	
+	public function check_comments(){
+		$this->load->model('model_comments');
+		
+		if ($this->model_comments->not_commented())
+			return true;
+		else{
+			$this->form_validation->set_message('check_comments', 'You have already commented on this requirement');
+			return false;
+		}
+	}
+	
+	
+	public function get_scores(){
+		$this->load->model("model_scores");
+		$this->load->model("model_users");
+		
+		$users = $this->model_users->get_users();
+		
+		foreach($users->result() as $user){
+			$data["scores"][$user->username] = $this->model_scores->get_user_scores($user->username);
+		}
+		
+		$data["users"] = $users;
+		
+		return $data;
 	}
 }

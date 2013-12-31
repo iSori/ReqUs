@@ -1,38 +1,35 @@
 <?php
 
-class Model_users extends CI_Model{
+class Model_comments extends CI_Model{
 	
-	public function can_log_in(){
+	public function add_comment(){
 		
-		$this->db->where('username', $this->input->post('username'));
-		$this->db->where('password', md5($this->input->post('password')));
+		if($this->session->userdata('is_logged_in')){
+			$data = array(
+				"comment" => $this->input->post('comment'),
+				"commenter" => $this->session->userdata('username'),
+				"requirement" => $this->input->post('requirement')
+			);
+			
+			$query = $this->db->insert("comment", $data);
+			
+			if($query)
+				return true;
+		} else return false;
 		
-		$query = $this->db->get('user');
 		
-		if ($query->num_rows() == 1){
+	}
+	
+	public function not_commented(){
+		$this->db->where('commenter', $this->session->userdata('username'));
+		$this->db->where('requirement', $this->input->post('requirement'));
+		
+		$query = $this->db->get('comment');
+		
+		if ($query->num_rows() == 0){
 			return true;
 		} else{
 			return false;
 		}
-	}
-	
-	public function add_temp_user($key){
-		
-		$data = array(
-			'email' => $this->input->post('email'),
-			'password' => md5($this->input->post('password')),
-			'username' => $this->input->post('username'),
-			'name' => $this->input->post('fullName'),
-			'key' => $key;
-		)
-		
-		query = $this->db->insert('temp_users', $data);
-		
-		if($query){
-			return true;
-		} else
-			return false;
-		}
-		
 	}
 }

@@ -1,3 +1,15 @@
 <div class="content">
-	<p> Here will go the scores of the project </p>
+	<div class="center">
+	<?php
+	
+	echo "<pre>";
+	foreach($users->result() as $row){
+		echo $row->name ." has ";
+		$username = $row->username;
+		echo  $scores[$username] ." points.<br/><br/>";
+	}
+	echo "<pre>";
+	
+	?>
+	</div>
 </div>

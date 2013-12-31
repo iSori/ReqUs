@@ -2,8 +2,9 @@
 	<?php
 	
 	$this->load->helper("form");
-	
-	echo $message;
+	?>
+	<p class="message"> <?php echo $message; ?></p>
+	<?php
 	
 	echo validation_errors();
 	

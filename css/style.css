@@ -72,6 +72,9 @@
 	color:black;
 }
 
+.message {
+	text-align:center;
+}
 /* REQUIREMENTS SECTION*/
 .req_wrap{
     width:70%;
@@ -98,6 +101,7 @@
 }
 .requirement table {
     border:5px;
+	background-color:#faf7fa;
 }
 .req_comments {
     width:70%;
@@ -106,9 +110,10 @@
 	background-color:white;
 }
 .req_comments  table{
+    width:100%;
 }
 
-.req_comments td {
+.req_comments table td {
     width:33%;
     border:2px solid #dd0000;
     border-width:0px 1px 1px 1px;
@@ -116,7 +121,13 @@
 	padding:7px;
 }
 
+.add_comm {
+	text-align:center;
+}
 
+.center{
+	text-align:center;
+}
 /* 'star-rating' component */
 .starReq{
 	width: 100%;
@@ -139,4 +150,25 @@ span:hover:before {
 	content: "\2605";
 	position: absolute;
 	color: orange;
+}
+
+.footer{
+	position:fixed;
+	text-align:center;
+    width:100%;
+    font-family:Georgia, serif;
+	background-color:#fff5f5;
+    bottom:0px;
+}
+
+.footer a:link, .footer a:visited{
+	color:blue;
+	font-weight:bold;
+}
+
+.info{
+	padding-left:20%;
+	padding-right:20%;
+	position:center;
+	text-align:justify;
 }

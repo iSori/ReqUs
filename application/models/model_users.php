@@ -37,7 +37,7 @@ class Model_users extends CI_Model{
 	
 	public function is_valid_key($key){
 		$this->db->where('key', $key);
-		$query = $this->db->get('temp_user');
+		$query = $this->db->get('temp_users');
 		
 		if ($query->num_rows() == 1)
 			return true;
@@ -47,7 +47,7 @@ class Model_users extends CI_Model{
 	
 	public function add_user($key){
 		$this->db->where('key', $key);
-		$temp_user = $this->db->get('temp_user');
+		$temp_user = $this->db->get('temp_users');
 		
 		if ($temp_user){
 			$row = $temp_user->row();
@@ -64,10 +64,24 @@ class Model_users extends CI_Model{
 		
 		if($add_user){
 			$this->db->where('key', $key);
-			$this->db->delete('temp_user');
+			$this->db->delete('temp_users');
 			return true;
 		}
 		
 		return false;
+	}
+	
+	public function get_user($username){
+		$this->db->where('username', $username);
+		$user = $this->db->get('user');
+		
+		return $user->row();
+	}
+	
+	
+	public function get_users(){
+		$users_query = $this->db->get('user');
+		
+		return $users_query;
 	}
 }

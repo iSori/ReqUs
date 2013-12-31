@@ -1,3 +1,3 @@
 <div class="content">
-	<p> <?php echo $message ?> </p>
+	<p class="message"> <?php echo $message ?> </p>
 </div>
